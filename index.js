@@ -1,13 +1,66 @@
 /* Your Code Here */
+const createEmployeeRecord = function(array = ['','','', 0]){
+    let obj = {
+        firstName: array[0],
+        familyName: array[1],
+        title: array[2],
+        payPerHour: array[3],
+        timeInEvents: [],
+        timeOutEvents: []
+    }
+    return obj
+}
 
-/*
- We're giving you this function. Take a look at it, you might see some usage
- that's new and different. That's because we're avoiding a well-known, but
- sneaky bug that we'll cover in the next few lessons!
+const createEmployeeRecords = function(records){
+    let newObj = records.map(function(record){
+        return createEmployeeRecord(record)
+    })
+    return newObj
+    }
 
- As a result, the lessons for this function will pass *and* it will be available
- for you to use if you need it!
- */
+function createTimeInEvent(date){
+let time = date.split(' ')
+this.timeInEvents.push({
+    type: 'TimeIn',
+    hour: parseInt(time[1]),
+    date: time[0]
+})
+return this
+}
+
+function createTimeOutEvent(date){
+let time = date.split(' ')
+this.timeOutEvents.push({
+    type: 'TimeOut',
+    hour: parseInt(time[1]),
+    date: time[0]
+})
+return this
+}
+
+function hoursWorkedOnDate(date){
+let timeInDate = this.timeInEvents.find(function(dateToFind){
+    return dateToFind.date === date
+})
+let timeOutDate = this.timeOutEvents.find(function(dateToFind){
+    return dateToFind.date === date
+})
+let hoursWorked = timeOutDate.hour - timeInDate.hour
+return hoursWorked/100
+}
+
+function wagesEarnedOnDate(date){
+let hoursWorked = hoursWorkedOnDate.call(this, date)
+let payPerHour = this.payPerHour
+return hoursWorked * payPerHour
+}
+
+function findEmployeeByFirstName(srcArray, name){
+return srcArray.find((record)=>{
+    return record.firstName === name
+})
+}
+
 
 let allWagesFor = function () {
     let eligibleDates = this.timeInEvents.map(function (e) {
@@ -20,3 +73,15 @@ let allWagesFor = function () {
 
     return payable
 }
+
+function calculatePayroll(array){
+    let totalWages = []
+    for (let i = 0; i < array.length; i++){
+        let wages = allWagesFor.call(array[i])
+        totalWages.push(wages)
+    }
+    return totalWages.reduce(function(ac, cv){
+        return ac + cv
+    })
+
+    }
